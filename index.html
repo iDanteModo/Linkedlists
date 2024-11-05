@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked Lists</title>
+</head>
+<script>
+    
+    class Node {
+        constructor(data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    class LinkedList {
+        constructor() {
+            this.head = null;
+            this.length = 0;
+        }
+        append(data) {
+            const node = new Node(data);
+
+            if(this.head === null) this.head = node;
+            else {
+                let current = this.head;
+                while(current.next != null) {
+                    // console.log(current);
+                    current = current.next;
+                }
+                current.next = node;
+            }
+            this.length++;
+        }
+        prepend(data) {
+            const node = new Node(data);
+
+        }
+        size() {
+            console.log(`Length of Linked List is ${this.length}`);
+            return this.length;
+        }
+        header() {
+            console.log(`Head is ${this.head.data}`);
+            return this.head.data;
+        }
+        tail () {
+            let current = this.head;
+            let currentTail ;
+            while (current != null) {
+                // console.log(`Node is : ${current.data}`);
+                if(current.next === null) {
+                    currentTail = current.data
+                    console.log(`Tail is ${current.data}`);
+                }
+                current = current.next;
+            }
+            return currentTail;
+        }
+        at(index) {
+            if(index > this.length - 1) {
+                console.log("Index too high, length of the LinkedList is " + this.length + "and index counter starts from 0");
+                return false;
+            }
+            let current = this.head;
+            for (let i = 0; i < this.length; i++) {
+                if( i === index) {
+                    console.log(`Value at ${index} is ${current.data}`);
+                    return current.data;
+                }
+                current = current.next;
+            }
+        }
+        pop() {
+            let pointer = this.head;
+            for( let i = 0; i < this.length; i ++){
+                if( i === this.length - 2){
+                    pointer.next = null;
+                    this.length --;
+                    return ;
+                }
+                pointer = pointer.next;
+            }
+        }
+        contains(value) {
+            let current = this.head; 
+            while(current != null) {
+                if (current.data === value){
+                    console.log(`LinkedList contains ${value} !`);
+                    return true;
+                } 
+            current = current.next;
+            }
+            console.log(`Linked List doesn't contain ${value}`);
+            return false;
+        }
+        find(value) {
+            let pointer = this.head;
+            let index = 0;
+            while(pointer != null) {
+                if (pointer.data === value) { 
+                    console.log(`The node with the value ${value} has the index of ${index}`)
+                }
+                index ++;
+                pointer = pointer.next;
+                console.log(`Node with the value ${value} not found`);
+            }
+        }
+        toString() {
+            let pointer = this.head; 
+            let string = '';
+            while(pointer != null) {
+                string +=`(${pointer.data}) ->`;
+                pointer = pointer.next;
+                if(pointer === null) {
+                    string +=" " + null + " // Length : " + this.length;
+                }
+            }
+            console.log(string);
+        }
+        insertAt(value, index) {
+            console.log(`Adding ${value} at index ${index}`)
+            const node = new Node(value);
+            let pointer = this.head;
+            let currentIndex = 0;
+            let previousPointer = null;
+            let nextPointer = pointer.next;
+            let newValue = node;
+            if (index  === 0) {
+                this.head= newValue;
+                newValue.next = pointer;
+            }
+            while (pointer != null) {
+                nextPointer = pointer.next;
+                // console.log(`Current Index is ${currentIndex}, CurrentPointer is ${pointer.data} / Previous Pointer is ${previousPointer ? previousPointer.data : "null"} and Next Pointer is ${nextPointer ? nextPointer.data : "null"}`);
+                previousPointer = pointer;
+                pointer = pointer.next;
+                if ( currentIndex === index - 1) {
+                    this.length ++;
+                    previousPointer.next = newValue;
+                    newValue.next = nextPointer;
+                    return true;
+                }
+                currentIndex ++;
+            }
+        }
+        removeAt(index) {
+            console.log(`Removing value at index ${index}`);
+            let pointer = this.head;
+            let currentIndex = 0;
+            let previousPointer = null;
+            let nextPointer = pointer.next;
+            if (index < 0) {
+                console.log(`Index cant be smaller than 0`);
+            }
+            while (pointer != null) {
+                nextPointer = pointer.next;
+                // console.log(`Current Index is ${currentIndex}, CurrentPointer is ${pointer.data} / Previous Pointer is ${previousPointer ? previousPointer.data : "null"} and Next Pointer is ${nextPointer ? nextPointer.data : "null"}`);
+                previousPointer = pointer;
+                pointer = pointer.next;
+                if ( currentIndex === index - 1) {
+                    this.length --;
+                    previousPointer.next = pointer.next;
+                    // console.log(list);
+                    // newValue.next = nextPointer;
+                    return true;
+                }
+                currentIndex ++;
+            }
+        }
+    }
+
+    const list = new LinkedList;
+    list.append("I");
+    list.append("Will");
+    list.append("BE");
+    list.append("Millionaire");
+    list.append("Dante");
+    list.append(5);
+    list.size();
+    list.header();
+    list.tail();
+    list.at(3);
+    list.pop();
+    list.contains(5);
+    list.find('WILL');
+    list.toString();
+    list.insertAt("NEWADD", 2);
+    list.toString();
+    list.removeAt(2);
+    list.toString();
+    
+</script>
+<body>
+    
+</body>
+</html>
+
+
+<!-- insertAt(value, index) {
+    const node = new Node(value);
+    let pointer = this.head;
+    let currentIndex = 0;
+    let previousPointer = null;
+    while (pointer != null) {
+        previousPointer = pointer;
+        let nextPointer = pointer.next;
+        if ( currentIndex === index) {
+            previousPointer.next = node;
+            return true;
+        }
+        pointer = pointer.next;
+        currentIndex ++;
+        console.log(`Current Index is ${currentIndex}, CurrentPointer is ${pointer.data} / Previous Pointer is ${previousPointer.data} and Next Pointer is ${nextPointer.data}`); -->
